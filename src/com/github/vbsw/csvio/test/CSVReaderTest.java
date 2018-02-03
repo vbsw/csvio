@@ -6,7 +6,7 @@
  */
 
 
-package com.github.vbsw.csvreader.test;
+package com.github.vbsw.csvio.test;
 
 
 import static org.junit.jupiter.api.Assertions.fail;

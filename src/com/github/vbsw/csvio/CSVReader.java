@@ -6,7 +6,7 @@
  */
 
 
-package com.github.vbsw.csvreader;
+package com.github.vbsw.csvio;
 
 
 import java.io.IOException;

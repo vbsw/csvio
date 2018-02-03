@@ -6,12 +6,15 @@
  */
 
 
-package com.github.vbsw.csvreader;
+package com.github.vbsw.csvio;
 
 
 /**
  * @author Vitali Baumtrok
  */
-public class BufferedReader {
+public class LineProcessor {
+
+	public void processLine ( final byte[] bytes, final int fromLeft, final int toRight ) {
+	}
 
 }

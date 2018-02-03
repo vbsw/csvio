@@ -6,14 +6,14 @@
  */
 
 
-package com.github.vbsw.csvreader.test;
+package com.github.vbsw.csvio.test;
 
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.vbsw.csvreader.WhitespaceParser;
+import com.github.vbsw.csvio.WhitespaceParser;
 
 
 /**
