@@ -15,11 +15,11 @@ import java.io.IOException;
 /**
  * @author Vitali Baumtrok
  */
-public abstract class CSVToDataConverter {
+public abstract class CSVProcessor {
 
-	public abstract void prepareConversion ( final WhitespaceParser whitespaceParser );
+	public abstract void prepareProcessing ( final WhitespaceParser whitespaceParser );
 
-	public abstract void convertCSV ( final byte[] bytes, final int from, final int to, final int lineNumber );
+	public abstract void processCSV ( final byte[] bytes, final int from, final int to, final int lineNumber );
 
 	public abstract void setException ( final IOException e );
 

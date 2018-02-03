@@ -49,8 +49,8 @@ public class CSVReader {
 		return fileReader;
 	}
 
-	public void readFile ( final Path filePath, final CSVToDataConverter csvToDataConv ) {
-		csvToDataConv.prepareConversion(whitespaceParser);
+	public void readFile ( final Path filePath, final CSVProcessor csvProcessor ) {
+		csvProcessor.prepareProcessing(whitespaceParser);
 		try ( final SeekableByteChannel channel = Files.newByteChannel(filePath,StandardOpenOption.READ) ) {
 			int lineBegin = 0;
 			int lineEnd = 0;
@@ -71,13 +71,13 @@ public class CSVReader {
 				}
 				lineBegin = whitespaceParser.seekContent(fileReader.getBytes(),lineBegin,lineEnd);
 				if ( !whitespaceParser.isWhitespace(fileReader.getBytes(),lineBegin,lineEnd) ) {
-					csvToDataConv.convertCSV(fileReader.getBytes(),lineBegin,lineEnd,lineNumber);
+					csvProcessor.processCSV(fileReader.getBytes(),lineBegin,lineEnd,lineNumber);
 				}
 				lineBegin = lineEnd;
 			}
 
 		} catch ( final IOException e ) {
-			csvToDataConv.setException(e);
+			csvProcessor.setException(e);
 		}
 	}
 
