@@ -22,26 +22,26 @@ import java.nio.file.StandardOpenOption;
 public class CSVReader {
 
 	protected final FileReader fileReader;
-	protected final WhitespaceParser whitespaceParser;
+	protected final CSVParser csvParser;
 
 	public CSVReader ( ) {
 		fileReader = createFileReader();
-		whitespaceParser = createWhitespaceParser();
+		csvParser = createCSVParser();
 	}
 
 	public CSVReader ( final FileReader fileReader ) {
 		this.fileReader = fileReader;
-		this.whitespaceParser = createWhitespaceParser();
+		this.csvParser = createCSVParser();
 	}
 
-	public CSVReader ( final FileReader fileReader, final WhitespaceParser whitespaceParser ) {
+	public CSVReader ( final FileReader fileReader, final CSVParser cSVParser ) {
 		this.fileReader = fileReader;
-		this.whitespaceParser = whitespaceParser;
+		this.csvParser = cSVParser;
 	}
 
-	protected WhitespaceParser createWhitespaceParser ( ) {
-		final WhitespaceParser whitespaceParser = new WhitespaceParser();
-		return whitespaceParser;
+	protected CSVParser createCSVParser ( ) {
+		final CSVParser csvParser = new CSVParser();
+		return csvParser;
 	}
 
 	protected FileReader createFileReader ( ) {
@@ -50,7 +50,7 @@ public class CSVReader {
 	}
 
 	public void readFile ( final Path filePath, final CSVProcessor csvProcessor ) {
-		csvProcessor.prepareProcessing(whitespaceParser);
+		csvProcessor.prepareProcessing(csvParser);
 		try ( final SeekableByteChannel channel = Files.newByteChannel(filePath,StandardOpenOption.READ) ) {
 			int lineBegin = 0;
 			int lineEnd = 0;
@@ -61,16 +61,16 @@ public class CSVReader {
 
 			while ( fileReader.getBytesRead() > 0 ) {
 				lineNumber += 1;
-				lineEnd = whitespaceParser.seekAfterLF(fileReader.getBytes(),lineEnd,fileReader.getBytesLength());
+				lineEnd = csvParser.seekAfterLF(fileReader.getBytes(),lineEnd,fileReader.getBytesLength());
 
-				while ( !whitespaceParser.endsWithLF(fileReader.getBytes(),lineEnd,lineBegin) && fileReader.isBufferFull() ) {
+				while ( !csvParser.endsWithLF(fileReader.getBytes(),lineEnd,lineBegin) && fileReader.isBufferFull() ) {
 					lineEnd = fileReader.preserveBufferAndEnsureCapacity(lineBegin,lineEnd);
 					lineBegin = 0;
 					fileReader.readFile();
-					lineEnd = whitespaceParser.seekAfterLF(fileReader.getBytes(),lineEnd,fileReader.getBytesLength());
+					lineEnd = csvParser.seekAfterLF(fileReader.getBytes(),lineEnd,fileReader.getBytesLength());
 				}
-				lineBegin = whitespaceParser.seekContent(fileReader.getBytes(),lineBegin,lineEnd);
-				if ( !whitespaceParser.isWhitespace(fileReader.getBytes(),lineBegin,lineEnd) ) {
+				lineBegin = csvParser.seekContent(fileReader.getBytes(),lineBegin,lineEnd);
+				if ( !csvParser.isWhitespace(fileReader.getBytes(),lineBegin,lineEnd) ) {
 					csvProcessor.processCSV(fileReader.getBytes(),lineBegin,lineEnd,lineNumber);
 				}
 				lineBegin = lineEnd;

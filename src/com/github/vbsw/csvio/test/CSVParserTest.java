@@ -13,17 +13,17 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.vbsw.csvio.WhitespaceParser;
+import com.github.vbsw.csvio.CSVParser;
 
 
 /**
  * @author Vitali Baumtrok
  */
-class WhitespaceParserTest {
+class CSVParserTest {
 
 	@Test
 	void testSeekAfterLF ( ) {
-		final WhitespaceParser parser = new WhitespaceParser();
+		final CSVParser parser = new CSVParser();
 		final String str1 = "   asdf adf\n asdf";
 		final String str2 = "\n asdf";
 		final String str3 = "   asdf adf asdf";
@@ -37,8 +37,8 @@ class WhitespaceParserTest {
 	}
 
 	@Test
-	void testendsWithLF ( ) {
-		final WhitespaceParser parser = new WhitespaceParser();
+	void testSeekContent ( ) {
+		final CSVParser parser = new CSVParser();
 		final String str1 = "     asdf adf\n asdf";
 		final String str2 = "\n asdf";
 		final String str4 = "   \t\t\r\t\r    ";
@@ -50,8 +50,45 @@ class WhitespaceParserTest {
 	}
 
 	@Test
+	void testSeekContentReverse ( ) {
+		final CSVParser parser = new CSVParser();
+		final String str1 = "     asdf adf\n asdf";
+		final String str2 = "\n asdf   ";
+		final String str4 = "   \t\t\r\t\r    ";
+
+		assertEquals(0,parser.seekContentReverse(str1.getBytes(),5,0));
+		assertEquals(5,parser.seekContentReverse(str1.getBytes(),5,10));
+		assertEquals(13,parser.seekContentReverse(str1.getBytes(),15,0));
+		assertEquals(6,parser.seekContentReverse(str2.getBytes(),str2.length(),0));
+		assertEquals(0,parser.seekContentReverse(str4.getBytes(),str4.length(),0));
+		assertEquals(str4.length(),parser.seekContentReverse(str4.getBytes(),str4.length(),str4.length()));
+	}
+
+	@Test
+	void testSplitValues ( ) {
+		final CSVParser parser = new CSVParser();
+		final String str1 = "asdf   ,  qwer,yxcv,";
+		final String str2 = "asdf   {|}  qwer{|}yxcv{|}";
+		final byte[] separator2 = new byte[] { '{', '|', '}' };
+		final byte[][] values1 = parser.splitValues(str1.getBytes(),0,str1.length());
+		final byte[][] values2 = parser.splitValues(str2.getBytes(),0,str2.length(),separator2);
+
+		assertEquals(4,values1.length);
+		assertEquals(true,new String(values1[0]).equals("asdf"));
+		assertEquals(true,new String(values1[1]).equals("qwer"));
+		assertEquals(true,new String(values1[2]).equals("yxcv"));
+		assertEquals(true,new String(values1[3]).equals(""));
+
+		assertEquals(4,values2.length);
+		assertEquals(true,new String(values2[0]).equals("asdf"));
+		assertEquals(true,new String(values2[1]).equals("qwer"));
+		assertEquals(true,new String(values2[2]).equals("yxcv"));
+		assertEquals(true,new String(values2[3]).equals(""));
+	}
+
+	@Test
 	void testEndsWithLF ( ) {
-		final WhitespaceParser parser = new WhitespaceParser();
+		final CSVParser parser = new CSVParser();
 		final String str1 = "   asdf adf\n asdf";
 		final String str2 = "\n asdf";
 		final String str3 = "   asdf adf asdf";
@@ -70,7 +107,7 @@ class WhitespaceParserTest {
 
 	@Test
 	void testIsWhitespace ( ) {
-		final WhitespaceParser parser = new WhitespaceParser();
+		final CSVParser parser = new CSVParser();
 		final String str1 = "   asdf adf\n asdf";
 		final String str2 = "\n asdf";
 		final String str3 = "   asdf adf asdf";

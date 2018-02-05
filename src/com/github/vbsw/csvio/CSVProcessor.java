@@ -17,7 +17,7 @@ import java.io.IOException;
  */
 public abstract class CSVProcessor {
 
-	public abstract void prepareProcessing ( final WhitespaceParser whitespaceParser );
+	public abstract void prepareProcessing ( final CSVParser csvParser );
 
 	public abstract void processCSV ( final byte[] bytes, final int from, final int to, final int lineNumber );
 
