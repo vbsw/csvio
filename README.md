@@ -37,8 +37,8 @@ Code:
 		}
 
 		@Override
-		public void processCSV ( byte[] bytes, int fromLeft, int toRight, int lineNumber, int bytesReadTotal ) {
-			final byte[][] values = this.parser.splitValues(bytes,fromLeft,toRight);
+		public void processCSV ( byte[] bytes, int from, int to, int lineNumber, int bytesReadTotal ) {
+			final byte[][] values = this.parser.splitValues(bytes,from,to);
 			System.out.print("values:");
 			for ( int i = 0; i < values.length; i += 1 ) {
 				System.out.print(" " + new String(values[i]));
