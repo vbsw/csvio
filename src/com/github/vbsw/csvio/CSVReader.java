@@ -50,7 +50,7 @@ public class CSVReader {
 		return fileReader;
 	}
 
-	public void readFile ( final Path filePath, final CSVProcessor csvProcessor ) {
+	public void readBytes ( final Path filePath, final CSVProcessor csvProcessor ) {
 		int bytesReadTotal = 0;
 		csvProcessor.startProcessing(csvParser);
 		try ( final SeekableByteChannel channel = Files.newByteChannel(filePath,StandardOpenOption.READ) ) {
@@ -85,7 +85,7 @@ public class CSVReader {
 		}
 	}
 
-	public void readReader ( final Reader reader, final CSVProcessor csvProcessor ) {
+	public void readChars ( final Reader reader, final CSVProcessor csvProcessor ) {
 		int bytesReadTotal = 0;
 		csvProcessor.startProcessing(csvParser);
 		try {

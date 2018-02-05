@@ -37,7 +37,7 @@ class FileReaderTest extends FileReader {
 		final CSVReaderTest csvProcessor = new CSVReaderTest();
 
 		createFile(filePath,content);
-		reader.readFile(filePath,csvProcessor);
+		reader.readBytes(filePath,csvProcessor);
 		deleteFile(filePath);
 
 		assertNotEquals(null,csvProcessor.parser);
