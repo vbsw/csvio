@@ -36,7 +36,7 @@ public class FileReader {
 		buffer = createByteBuffer(initialBufferCapacity);
 	}
 
-	protected void prepareFileReading ( final SeekableByteChannel channel ) {
+	protected void startFileReading ( final SeekableByteChannel channel ) {
 		this.channel = channel;
 		this.bytesLength = 0;
 		this.bytesRead = 0;
@@ -45,7 +45,9 @@ public class FileReader {
 	public void readFile ( ) throws IOException {
 		bytesLength = buffer.position();
 		bytesRead = channel.read(buffer);
-		bytesLength += bytesRead;
+		if ( bytesRead >= 0 ) {
+			bytesLength += bytesRead;
+		}
 	}
 
 	public byte[] getBytes ( ) {

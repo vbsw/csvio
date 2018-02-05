@@ -50,34 +50,37 @@ public class CSVReader {
 	}
 
 	public void readFile ( final Path filePath, final CSVProcessor csvProcessor ) {
-		csvProcessor.prepareProcessing(csvParser);
+		int bytesReadTotal = 0;
+		csvProcessor.startProcessing(csvParser);
 		try ( final SeekableByteChannel channel = Files.newByteChannel(filePath,StandardOpenOption.READ) ) {
 			int lineBegin = 0;
 			int lineEnd = 0;
 			int lineNumber = 0;
 
-			fileReader.prepareFileReading(channel);
+			fileReader.startFileReading(channel);
 			fileReader.readFile();
 
 			while ( fileReader.getBytesRead() > 0 ) {
 				lineNumber += 1;
 				lineEnd = csvParser.seekAfterLF(fileReader.getBytes(),lineEnd,fileReader.getBytesLength());
 
-				while ( !csvParser.endsWithLF(fileReader.getBytes(),lineEnd,lineBegin) && fileReader.isBufferFull() ) {
+				while ( !csvParser.endsWithLF(fileReader.getBytes(),lineEnd,lineBegin) && fileReader.getBytesRead() > 0 ) {
 					lineEnd = fileReader.preserveBufferAndEnsureCapacity(lineBegin,lineEnd);
 					lineBegin = 0;
 					fileReader.readFile();
 					lineEnd = csvParser.seekAfterLF(fileReader.getBytes(),lineEnd,fileReader.getBytesLength());
 				}
-				lineBegin = csvParser.seekContent(fileReader.getBytes(),lineBegin,lineEnd);
+				bytesReadTotal += (lineEnd - lineBegin);
 				if ( !csvParser.isWhitespace(fileReader.getBytes(),lineBegin,lineEnd) ) {
-					csvProcessor.processCSV(fileReader.getBytes(),lineBegin,lineEnd,lineNumber);
+					csvProcessor.processCSV(fileReader.getBytes(),lineBegin,lineEnd,lineNumber,bytesReadTotal);
 				}
 				lineBegin = lineEnd;
 			}
+			csvProcessor.endProcessing(bytesReadTotal);
 
 		} catch ( final IOException e ) {
 			csvProcessor.setException(e);
+			csvProcessor.endProcessing(bytesReadTotal);
 		}
 	}
 

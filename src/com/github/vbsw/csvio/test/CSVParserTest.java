@@ -125,4 +125,24 @@ class CSVParserTest {
 		assertEquals(true,parser.isWhitespace(str4.getBytes(),3,8));
 	}
 
+	@Test
+	void testSeekPosition ( ) {
+		final CSVParser parser = new CSVParser();
+		final String str1 = "   asdf adf\n asdf";
+
+		assertEquals(3,parser.seekPosition(str1.getBytes(),0,str1.length(),(byte) 'a'));
+		assertEquals(6,parser.seekPosition(str1.getBytes(),0,str1.length(),(byte) 'f'));
+		assertEquals(9,parser.seekPosition(str1.getBytes(),6,str1.length(),(byte) 'd'));
+		assertEquals(11,parser.seekPosition(str1.getBytes(),6,str1.length(),(byte) '\n'));
+		assertEquals(str1.length(),parser.seekPosition(str1.getBytes(),6,str1.length(),(byte) 'k'));
+	}
+	
+	@Test
+	void testGetValuesCount() {
+		final CSVParser parser = new CSVParser();
+		final String str1 = "   asdf adf\n asdf";
+
+		assertEquals(0,parser.getValuesCount(str1.getBytes(),0,3));
+	}
+
 }
