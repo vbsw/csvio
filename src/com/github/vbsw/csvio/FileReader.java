@@ -70,7 +70,7 @@ public class FileReader {
 				bytesLength = toRight - fromLeft;
 				System.arraycopy(bytes,fromLeft,bytes,0,bytesLength);
 			} else if ( toRight >= bytes.length ) {
-				buffer = createByteBufferExtended(bytes,0,toRight);
+				buffer = createByteBufferExtended(bytes,0,bytes.length);
 				bytesLength = bytes.length;
 			} else {
 				bytesLength = toRight;

@@ -10,6 +10,7 @@ package com.github.vbsw.csvio;
 
 
 import java.io.IOException;
+import java.io.Reader;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -82,6 +83,68 @@ public class CSVReader {
 			csvProcessor.setException(e);
 			csvProcessor.endProcessing(bytesReadTotal);
 		}
+	}
+
+	public void readReader ( final Reader reader, final CSVProcessor csvProcessor ) {
+		int bytesReadTotal = 0;
+		csvProcessor.startProcessing(csvParser);
+		try {
+			char[] buffer = createCharBuffer();
+			int charsRead = 0;
+			int charsLength = 0;
+			int lineBegin = 0;
+			int lineEnd = 0;
+			int lineNumber = 0;
+
+			charsRead = reader.read(buffer);
+			charsLength = charsRead;
+
+			while ( charsRead > 0 ) {
+				lineNumber += 1;
+				lineEnd = csvParser.seekAfterLF(buffer,lineEnd,charsLength);
+
+				while ( !csvParser.endsWithLF(buffer,lineEnd,lineBegin) && charsRead > 0 ) {
+					buffer = preserveBufferAndEnsureCapacity(buffer,lineBegin,lineEnd);
+					charsLength = lineEnd - lineBegin;
+					lineEnd = charsLength;
+					lineBegin = 0;
+					charsRead = reader.read(buffer,lineEnd,buffer.length - lineEnd);
+					charsLength += charsRead;
+					lineEnd = csvParser.seekAfterLF(buffer,lineEnd,charsLength);
+				}
+				bytesReadTotal += (lineEnd - lineBegin);
+				if ( !csvParser.isWhitespace(buffer,lineBegin,lineEnd) ) {
+					csvProcessor.processCSV(buffer,lineBegin,lineEnd,lineNumber,bytesReadTotal);
+				}
+				lineBegin = lineEnd;
+			}
+			csvProcessor.endProcessing(bytesReadTotal);
+
+		} catch ( final IOException e ) {
+			csvProcessor.setException(e);
+			csvProcessor.endProcessing(bytesReadTotal);
+		}
+	}
+
+	protected char[] createCharBuffer ( ) {
+		return new char[1024 * 8 - 64 * 8];
+	}
+
+	protected char[] createCharBufferExtended ( final char[] chars, final int offset, final int copyLength ) {
+		final char[] charsNew = new char[chars.length * 2];
+		System.arraycopy(chars,offset,charsNew,0,copyLength);
+		return charsNew;
+	}
+
+	private char[] preserveBufferAndEnsureCapacity ( char[] chars, final int fromLeft, final int toRight ) {
+		if ( fromLeft < toRight ) {
+			if ( fromLeft > 0 ) {
+				System.arraycopy(chars,fromLeft,chars,0,toRight - fromLeft);
+			} else if ( toRight >= chars.length ) {
+				chars = createCharBufferExtended(chars,0,chars.length);
+			}
+		}
+		return chars;
 	}
 
 }

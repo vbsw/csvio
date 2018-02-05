@@ -17,12 +17,19 @@ import java.io.IOException;
  */
 public abstract class CSVProcessor {
 
-	public abstract void startProcessing ( final CSVParser csvParser );
+	public void startProcessing ( final CSVParser csvParser ) {
+	}
 
-	public abstract void processCSV ( final byte[] bytes, final int fromLeft, final int toRight, final int lineNumber, final int bytesReadTotal );
+	public void processCSV ( final byte[] bytes, final int fromLeft, final int toRight, final int lineNumber, final int bytesReadTotal ) {
+	}
 
-	public abstract void endProcessing ( final int bytesReadTotal );
+	public void endProcessing ( final int bytesReadTotal ) {
+	}
 
-	public abstract void setException ( final IOException e );
+	public void setException ( final IOException e ) {
+	}
+
+	public void processCSV ( final char[] buffer, final int fromLeft, final int toRight, final int lineNumber, final int bytesReadTotal ) {
+	}
 
 }
