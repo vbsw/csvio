@@ -19,28 +19,21 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
-import com.github.vbsw.csvio.CSVParser;
-import com.github.vbsw.csvio.CSVProcessor;
 import com.github.vbsw.csvio.CSVReader;
+import com.github.vbsw.csvio.FileReader;
 
 
-/**
- * @author Vitali Baumtrok
- */
-class CSVReaderTest extends CSVProcessor {
+class FileReaderTest extends FileReader {
 
-	CSVParser parser = null;
-	IOException exeption = null;
-	int bytesReadTotal = -1;
-	int[] lineNumbers = null;
-	int entryCounter = 0;
-	String[][] values = null;
+	public FileReaderTest ( ) {
+		super(6);
+	}
 
 	@Test
-	void testA ( ) {
+	void test ( ) {
 		final String content = "asdf,qwer,yxcv\n\ntt,uu,vv,ww\n\n\n\nxyz";
 		final Path filePath = Paths.get(System.getProperty("user.home"),"csvio.test.csv");
-		final CSVReader reader = new CSVReader();
+		final CSVReader reader = new CSVReader(this);
 		final CSVReaderTest csvProcessor = new CSVReaderTest();
 
 		createFile(filePath,content);
@@ -84,56 +77,6 @@ class CSVReaderTest extends CSVProcessor {
 			Files.delete(filePath);
 		} catch ( IOException e ) {
 		}
-	}
-
-	@Override
-	public void startProcessing ( final CSVParser csvParser ) {
-		this.parser = csvParser;
-		this.lineNumbers = new int[] { -1, -1, -1, -1 };
-		this.values = new String[this.lineNumbers.length][];
-	}
-
-	@Override
-	public void processCSV ( final byte[] bytes, final int fromLeft, final int toRight, final int lineNumber, final int bytesReadTotal ) {
-		if ( this.entryCounter < this.lineNumbers.length ) {
-			final byte[][] values = this.parser.splitValues(bytes,fromLeft,toRight);
-			this.lineNumbers[this.entryCounter] = lineNumber;
-			this.values[this.entryCounter] = new String[values.length];
-			for ( int i = 0; i < values.length; i += 1 ) {
-				this.values[this.entryCounter][i] = new String(values[i]);
-			}
-		}
-		this.entryCounter += 1;
-		this.bytesReadTotal = bytesReadTotal;
-	}
-
-	@Override
-	public void endProcessing ( final int bytesReadTotal ) {
-		this.bytesReadTotal = bytesReadTotal;
-	}
-
-	@Override
-	public void setException ( final IOException e ) {
-		this.exeption = e;
-	}
-
-	@Override
-	public String toString ( ) {
-		final StringBuilder stringBuilder = new StringBuilder();
-		for ( int i = 0; i < this.values.length; i += 1 ) {
-			if ( this.values[i] != null ) {
-				stringBuilder.append('[');
-				for ( int j = 0; j < this.values[i].length; j += 1 ) {
-					if ( j > 0 ) {
-						stringBuilder.append(',');
-					}
-					stringBuilder.append(new String(this.values[i][j]));
-				}
-				stringBuilder.append(']');
-				stringBuilder.append('\n');
-			}
-		}
-		return stringBuilder.toString();
 	}
 
 }

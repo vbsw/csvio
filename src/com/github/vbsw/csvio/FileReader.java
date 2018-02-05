@@ -62,10 +62,6 @@ public class FileReader {
 		return bytesRead;
 	}
 
-	public boolean isBufferFull ( ) {
-		return getBytesLength() == getBytes().length;
-	}
-
 	public int preserveBufferAndEnsureCapacity ( final int fromLeft, final int toRight ) {
 		if ( fromLeft < toRight ) {
 			final byte[] bytes = buffer.array();
