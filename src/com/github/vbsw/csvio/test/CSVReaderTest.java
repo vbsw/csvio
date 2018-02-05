@@ -20,57 +20,51 @@ import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Test;
 
+import com.github.vbsw.csvio.CSVByteProcessor;
+import com.github.vbsw.csvio.CSVCharProcessor;
 import com.github.vbsw.csvio.CSVParser;
-import com.github.vbsw.csvio.CSVProcessor;
 import com.github.vbsw.csvio.CSVReader;
 
 
 /**
  * @author Vitali Baumtrok
  */
-class CSVReaderTest extends CSVProcessor {
-
-	CSVParser parser = null;
-	IOException exeption = null;
-	int bytesReadTotal = -1;
-	int[] lineNumbers = null;
-	int entryCounter = 0;
-	String[][] values = null;
+class CSVReaderTest {
 
 	@Test
 	void testA ( ) {
 		final String content = "asdf,qwer,yxcv\n\ntt,uu,vv,ww\n\n\n\nxyz";
 		final Path filePath = Paths.get(System.getProperty("user.home"),"csvio.test.csv");
 		final CSVReader reader = new CSVReader();
-		final CSVReaderTest csvProcessor = new CSVReaderTest();
+		final TestByteProcessor processor = new TestByteProcessor();
 
 		createFile(filePath,content);
-		reader.readBytes(filePath,csvProcessor);
+		reader.readFile(filePath,processor);
 		deleteFile(filePath);
 
-		assertNotEquals(null,csvProcessor.parser);
-		assertNotEquals(null,csvProcessor.lineNumbers);
-		assertNotEquals(null,csvProcessor.values);
-		assertEquals(null,csvProcessor.exeption);
-		assertEquals(content.length(),csvProcessor.bytesReadTotal);
-		assertEquals(4,csvProcessor.values.length);
-		assertEquals(3,csvProcessor.values[0].length);
-		assertEquals(4,csvProcessor.values[1].length);
-		assertEquals(1,csvProcessor.values[2].length);
-		assertEquals(4,csvProcessor.lineNumbers.length);
-		assertEquals("asdf",csvProcessor.values[0][0]);
-		assertEquals("qwer",csvProcessor.values[0][1]);
-		assertEquals("yxcv",csvProcessor.values[0][2]);
-		assertEquals("tt",csvProcessor.values[1][0]);
-		assertEquals("uu",csvProcessor.values[1][1]);
-		assertEquals("vv",csvProcessor.values[1][2]);
-		assertEquals("ww",csvProcessor.values[1][3]);
-		assertEquals("xyz",csvProcessor.values[2][0]);
-		assertEquals(1,csvProcessor.lineNumbers[0]);
-		assertEquals(3,csvProcessor.lineNumbers[1]);
-		assertEquals(7,csvProcessor.lineNumbers[2]);
-		assertEquals(-1,csvProcessor.lineNumbers[3]);
-		assertEquals((String) null,csvProcessor.values[3]);
+		assertNotEquals(null,processor.parser);
+		assertNotEquals(null,processor.lineNumbers);
+		assertNotEquals(null,processor.values);
+		assertEquals(null,processor.exeption);
+		assertEquals(content.length(),processor.bytesReadTotal);
+		assertEquals(4,processor.values.length);
+		assertEquals(3,processor.values[0].length);
+		assertEquals(4,processor.values[1].length);
+		assertEquals(1,processor.values[2].length);
+		assertEquals(4,processor.lineNumbers.length);
+		assertEquals("asdf",processor.values[0][0]);
+		assertEquals("qwer",processor.values[0][1]);
+		assertEquals("yxcv",processor.values[0][2]);
+		assertEquals("tt",processor.values[1][0]);
+		assertEquals("uu",processor.values[1][1]);
+		assertEquals("vv",processor.values[1][2]);
+		assertEquals("ww",processor.values[1][3]);
+		assertEquals("xyz",processor.values[2][0]);
+		assertEquals(1,processor.lineNumbers[0]);
+		assertEquals(3,processor.lineNumbers[1]);
+		assertEquals(7,processor.lineNumbers[2]);
+		assertEquals(-1,processor.lineNumbers[3]);
+		assertEquals((String) null,processor.values[3]);
 	}
 
 	@Test
@@ -78,33 +72,33 @@ class CSVReaderTest extends CSVProcessor {
 		final String content = "asdf,qwer,yxcv\n\ntt,uu,vv,ww\n\n\n\nxyz";
 		final CharReader charReader = new CharReader(content);
 		final CSVReader reader = new CSVReader();
-		final CSVReaderTest csvProcessor = new CSVReaderTest();
+		final TestCharProcessor processor = new TestCharProcessor();
 
-		reader.readChars(charReader,csvProcessor);
+		reader.readAbstract(charReader,processor);
 
-		assertNotEquals(null,csvProcessor.parser);
-		assertNotEquals(null,csvProcessor.lineNumbers);
-		assertNotEquals(null,csvProcessor.values);
-		assertEquals(null,csvProcessor.exeption);
-		assertEquals(content.length(),csvProcessor.bytesReadTotal);
-		assertEquals(4,csvProcessor.values.length);
-		assertEquals(3,csvProcessor.values[0].length);
-		assertEquals(4,csvProcessor.values[1].length);
-		assertEquals(1,csvProcessor.values[2].length);
-		assertEquals(4,csvProcessor.lineNumbers.length);
-		assertEquals("asdf",csvProcessor.values[0][0]);
-		assertEquals("qwer",csvProcessor.values[0][1]);
-		assertEquals("yxcv",csvProcessor.values[0][2]);
-		assertEquals("tt",csvProcessor.values[1][0]);
-		assertEquals("uu",csvProcessor.values[1][1]);
-		assertEquals("vv",csvProcessor.values[1][2]);
-		assertEquals("ww",csvProcessor.values[1][3]);
-		assertEquals("xyz",csvProcessor.values[2][0]);
-		assertEquals(1,csvProcessor.lineNumbers[0]);
-		assertEquals(3,csvProcessor.lineNumbers[1]);
-		assertEquals(7,csvProcessor.lineNumbers[2]);
-		assertEquals(-1,csvProcessor.lineNumbers[3]);
-		assertEquals((String) null,csvProcessor.values[3]);
+		assertNotEquals(null,processor.parser);
+		assertNotEquals(null,processor.lineNumbers);
+		assertNotEquals(null,processor.values);
+		assertEquals(null,processor.exeption);
+		assertEquals(content.length(),processor.bytesReadTotal);
+		assertEquals(4,processor.values.length);
+		assertEquals(3,processor.values[0].length);
+		assertEquals(4,processor.values[1].length);
+		assertEquals(1,processor.values[2].length);
+		assertEquals(4,processor.lineNumbers.length);
+		assertEquals("asdf",processor.values[0][0]);
+		assertEquals("qwer",processor.values[0][1]);
+		assertEquals("yxcv",processor.values[0][2]);
+		assertEquals("tt",processor.values[1][0]);
+		assertEquals("uu",processor.values[1][1]);
+		assertEquals("vv",processor.values[1][2]);
+		assertEquals("ww",processor.values[1][3]);
+		assertEquals("xyz",processor.values[2][0]);
+		assertEquals(1,processor.lineNumbers[0]);
+		assertEquals(3,processor.lineNumbers[1]);
+		assertEquals(7,processor.lineNumbers[2]);
+		assertEquals(-1,processor.lineNumbers[3]);
+		assertEquals((String) null,processor.values[3]);
 	}
 
 	private void createFile ( final Path filePath, final String str ) {
@@ -121,70 +115,128 @@ class CSVReaderTest extends CSVProcessor {
 		}
 	}
 
-	@Override
-	public void startProcessing ( final CSVParser csvParser ) {
-		this.parser = csvParser;
-		this.lineNumbers = new int[] { -1, -1, -1, -1 };
-		this.values = new String[this.lineNumbers.length][];
-	}
+	private static class TestByteProcessor extends CSVByteProcessor {
 
-	@Override
-	public void processCSV ( final byte[] bytes, final int fromLeft, final int toRight, final int lineNumber, final int bytesReadTotal ) {
-		if ( this.entryCounter < this.lineNumbers.length ) {
-			final byte[][] values = this.parser.splitValues(bytes,fromLeft,toRight);
-			this.lineNumbers[this.entryCounter] = lineNumber;
-			this.values[this.entryCounter] = new String[values.length];
-			for ( int i = 0; i < values.length; i += 1 ) {
-				this.values[this.entryCounter][i] = new String(values[i]);
-			}
+		CSVParser parser = null;
+		IOException exeption = null;
+		int bytesReadTotal = -1;
+		int[] lineNumbers = null;
+		int entryCounter = 0;
+		String[][] values = null;
+
+		@Override
+		public void startProcessing ( CSVParser csvParser ) {
+			this.parser = csvParser;
+			this.lineNumbers = new int[] { -1, -1, -1, -1 };
+			this.values = new String[this.lineNumbers.length][];
 		}
-		this.entryCounter += 1;
-		this.bytesReadTotal = bytesReadTotal;
-	}
 
-	@Override
-	public void processCSV ( final char[] chars, final int fromLeft, final int toRight, final int lineNumber, final int bytesReadTotal ) {
-		if ( this.entryCounter < this.lineNumbers.length ) {
-			final char[][] values = this.parser.splitValues(chars,fromLeft,toRight);
-			this.lineNumbers[this.entryCounter] = lineNumber;
-			this.values[this.entryCounter] = new String[values.length];
-			for ( int i = 0; i < values.length; i += 1 ) {
-				this.values[this.entryCounter][i] = new String(values[i]);
-			}
-		}
-		this.entryCounter += 1;
-		this.bytesReadTotal = bytesReadTotal;
-	}
-
-	@Override
-	public void endProcessing ( final int bytesReadTotal ) {
-		this.bytesReadTotal = bytesReadTotal;
-	}
-
-	@Override
-	public void setException ( final IOException e ) {
-		this.exeption = e;
-	}
-
-	@Override
-	public String toString ( ) {
-		final StringBuilder stringBuilder = new StringBuilder();
-		for ( int i = 0; i < this.values.length; i += 1 ) {
-			if ( this.values[i] != null ) {
-				stringBuilder.append('[');
-				for ( int j = 0; j < this.values[i].length; j += 1 ) {
-					if ( j > 0 ) {
-						stringBuilder.append(',');
-					}
-					stringBuilder.append(new String(this.values[i][j]));
+		@Override
+		public void processCSV ( byte[] bytes, int fromLeft, int toRight, int lineNumber, int bytesReadTotal ) {
+			if ( this.entryCounter < this.lineNumbers.length ) {
+				final byte[][] values = this.parser.splitValues(bytes,fromLeft,toRight);
+				this.lineNumbers[this.entryCounter] = lineNumber;
+				this.values[this.entryCounter] = new String[values.length];
+				for ( int i = 0; i < values.length; i += 1 ) {
+					this.values[this.entryCounter][i] = new String(values[i]);
 				}
-				stringBuilder.append(']');
-				stringBuilder.append('\n');
 			}
+			this.entryCounter += 1;
+			this.bytesReadTotal = bytesReadTotal;
 		}
-		return stringBuilder.toString();
+
+		@Override
+		public void endProcessing ( int bytesReadTotal ) {
+			this.bytesReadTotal = bytesReadTotal;
+		}
+
+		@Override
+		public void setException ( IOException e ) {
+			this.exeption = e;
+		}
+
+		@Override
+		public String toString ( ) {
+			final StringBuilder stringBuilder = new StringBuilder();
+			for ( int i = 0; i < this.values.length; i += 1 ) {
+				if ( this.values[i] != null ) {
+					stringBuilder.append('[');
+					for ( int j = 0; j < this.values[i].length; j += 1 ) {
+						if ( j > 0 ) {
+							stringBuilder.append(',');
+						}
+						stringBuilder.append(new String(this.values[i][j]));
+					}
+					stringBuilder.append(']');
+					stringBuilder.append('\n');
+				}
+			}
+			return stringBuilder.toString();
+		}
+		
 	}
 
+	private static class TestCharProcessor extends CSVCharProcessor {
+
+		CSVParser parser = null;
+		IOException exeption = null;
+		int bytesReadTotal = -1;
+		int[] lineNumbers = null;
+		int entryCounter = 0;
+		String[][] values = null;
+
+		@Override
+		public void startProcessing ( CSVParser csvParser ) {
+			this.parser = csvParser;
+			this.lineNumbers = new int[] { -1, -1, -1, -1 };
+			this.values = new String[this.lineNumbers.length][];
+		}
+
+		@Override
+		public void processCSV ( char[] chars, int fromLeft, int toRight, int lineNumber, int bytesReadTotal ) {
+			if ( this.entryCounter < this.lineNumbers.length ) {
+				final char[][] values = this.parser.splitValues(chars,fromLeft,toRight);
+				this.lineNumbers[this.entryCounter] = lineNumber;
+				this.values[this.entryCounter] = new String[values.length];
+				for ( int i = 0; i < values.length; i += 1 ) {
+					this.values[this.entryCounter][i] = new String(values[i]);
+				}
+			}
+			this.entryCounter += 1;
+			this.bytesReadTotal = bytesReadTotal;
+		}
+
+		@Override
+		public void endProcessing ( int bytesReadTotal ) {
+			this.bytesReadTotal = bytesReadTotal;
+		}
+
+		@Override
+		public void setException ( IOException e ) {
+			this.exeption = e;
+		}
+
+		@Override
+		public String toString ( ) {
+			final StringBuilder stringBuilder = new StringBuilder();
+			for ( int i = 0; i < this.values.length; i += 1 ) {
+				if ( this.values[i] != null ) {
+					stringBuilder.append('[');
+					for ( int j = 0; j < this.values[i].length; j += 1 ) {
+						if ( j > 0 ) {
+							stringBuilder.append(',');
+						}
+						stringBuilder.append(new String(this.values[i][j]));
+					}
+					stringBuilder.append(']');
+					stringBuilder.append('\n');
+				}
+			}
+			return stringBuilder.toString();
+		}
+		
+	}
+	
 	private static class CharReader extends Reader {
 
 		private final String content;
