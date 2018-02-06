@@ -32,10 +32,10 @@ public class CSVWriter {
 
 		marshaller.startMarshalling(parser,charset);
 
-		try ( final BufferedWriter writer = getBufferedWriter(filePath,charset) ) {
+		try ( final Writer writer = getBufferedWriter(filePath,charset) ) {
 			while ( marshaller.hasLine() ) {
 				marshaller.marshallLine(writer);
-				writer.newLine();
+				writer.write(System.lineSeparator());
 			}
 		} catch ( final IOException e ) {
 			marshaller.setException(e);

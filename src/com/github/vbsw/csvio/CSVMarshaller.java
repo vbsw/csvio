@@ -9,7 +9,6 @@
 package com.github.vbsw.csvio;
 
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.charset.Charset;
@@ -23,8 +22,6 @@ public abstract class CSVMarshaller {
 	public abstract void startMarshalling ( final CSVParser parser, final Charset charset );
 
 	public abstract boolean hasLine ( );
-
-	public abstract void marshallLine ( final BufferedWriter writer );
 
 	public abstract void marshallLine ( final Writer writer );
 
