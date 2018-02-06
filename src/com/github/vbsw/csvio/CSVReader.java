@@ -71,10 +71,10 @@ public class CSVReader {
 				}
 				lineBegin = lineEnd;
 			}
-			processor.endProcessing(bytesReadTotal);
 
 		} catch ( final IOException e ) {
 			processor.setException(e);
+		} finally {
 			processor.endProcessing(bytesReadTotal);
 		}
 	}
@@ -122,10 +122,10 @@ public class CSVReader {
 				}
 				lineBegin = lineEnd;
 			}
-			processor.endProcessing(bytesReadTotal);
 
 		} catch ( final IOException e ) {
 			processor.setException(e);
+		} finally {
 			processor.endProcessing(bytesReadTotal);
 		}
 	}

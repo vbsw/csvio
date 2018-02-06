@@ -37,9 +37,9 @@ public class CSVWriter {
 				marshaller.marshallLine(writer);
 				writer.newLine();
 			}
-			marshaller.endMarshalling();
 		} catch ( final IOException e ) {
 			marshaller.setException(e);
+		} finally {
 			marshaller.endMarshalling();
 		}
 	}
@@ -54,9 +54,15 @@ public class CSVWriter {
 				marshaller.marshallLine(writer);
 				writer.write(System.lineSeparator());
 			}
-			marshaller.endMarshalling();
+
 		} catch ( final IOException e ) {
 			marshaller.setException(e);
+		} finally {
+			try {
+				writer.close();
+			} catch ( final IOException e ) {
+				marshaller.setException(e);
+			}
 			marshaller.endMarshalling();
 		}
 	}
