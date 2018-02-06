@@ -21,12 +21,15 @@ Code:
 		public static void main ( String[] args ) {
 			final Path filePath = Paths.get(System.getProperty("user.home"),"csvio.test.csv");
 			final String content = "asdf,qwer,yxcv";
+
 			final Main processor = new Main();
 			final CSVReader reader = new CSVReader();
+
 			try {
 				Files.write(filePath,content.getBytes());
 				reader.readFile(filePath,processor);
 				Files.delete(filePath);
+
 			} catch ( IOException e ) {
 			}
 		}
@@ -39,11 +42,7 @@ Code:
 		@Override
 		public void processLine ( byte[] bytes, int from, int to, int lineNumber, int bytesReadTotal ) {
 			final String[] values = this.parser.splitValues(bytes,from,to);
-			System.out.print("values:");
-			for ( int i = 0; i < values.length; i += 1 ) {
-				System.out.print(" " + values[i]);
-			}
-			System.out.println();
+			System.out.println("values: " + Arrays.toString(values));
 		}
 
 		@Override
@@ -60,7 +59,7 @@ Code:
 
 Output:
 
-	values: asdf qwer yxcv
+	values: [asdf, qwer, yxcv]
 	bytes read: 14
 
 ## Compiling
