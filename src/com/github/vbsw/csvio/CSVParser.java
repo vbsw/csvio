@@ -498,6 +498,60 @@ public class CSVParser {
 		return fromLeft;
 	}
 
+	/**
+	 * Converts given value to String.
+	 * @param value Value to convert.
+	 * @return Given value as String.
+	 */
+	public String toString ( final long value ) {
+		return Long.toString(value);
+	}
+
+	/**
+	 * Converts given value to String.
+	 * @param value Value to convert.
+	 * @return Given value as String.
+	 */
+	public String toString ( final int value ) {
+		return Integer.toString(value);
+	}
+
+	/**
+	 * Converts given value to String.
+	 * @param value Value to convert.
+	 * @return Given value as String.
+	 */
+	public String toString ( final short value ) {
+		return Short.toString(value);
+	}
+
+	/**
+	 * Converts given value to String.
+	 * @param value Value to convert.
+	 * @return Given value as String.
+	 */
+	public String toString ( final byte value ) {
+		return Byte.toString(value);
+	}
+
+	/**
+	 * Converts given value to String.
+	 * @param value Value to convert.
+	 * @return Given value as String.
+	 */
+	public String toString ( final double value ) {
+		return Double.toString(value);
+	}
+
+	/**
+	 * Converts given value to String.
+	 * @param value Value to convert.
+	 * @return Given value as String.
+	 */
+	public String toString ( final float value ) {
+		return Float.toString(value);
+	}
+
 	private boolean isWhitespace ( final byte character ) {
 		return character >= 0 && character <= 32;
 	}

@@ -20,12 +20,17 @@ import java.nio.file.StandardOpenOption;
 
 
 /**
- * The writer to write to a file or an abstract destination.
+ * The writer writes to a file or an abstract writer.
  * 
  * @author Vitali Baumtrok
  */
 public class CSVWriter {
 
+	/**
+	 * Writes to file at <code>filePath</code> using <code>marshaller</code>.
+	 * @param filePath Path to the file to write to.
+	 * @param marshaller Marshaller that writes to file.
+	 */
 	public void writeFile ( final Path filePath, final CSVMarshaller marshaller ) {
 		final CSVParser parser = getParser();
 		final Charset charset = getCharset();
@@ -44,22 +49,26 @@ public class CSVWriter {
 		}
 	}
 
-	public void writeAbstract ( final Writer writer, final CSVMarshaller marshaller ) {
+	/**
+	 * Writes to abstract writer using <code>marshaller</code>.
+	 * @param abstractWriter Abstract writer to write to.
+	 * @param marshaller Marshaller that writes to abstract writer.
+	 */
+	public void writeAbstract ( final Writer abstractWriter, final CSVMarshaller marshaller ) {
 		final CSVParser parser = getParser();
 
 		marshaller.startMarshalling(parser,null);
 
 		try {
 			while ( marshaller.hasLine() ) {
-				marshaller.marshallLine(writer);
-				writer.write(System.lineSeparator());
+				marshaller.marshallLine(abstractWriter);
+				abstractWriter.write(System.lineSeparator());
 			}
-
 		} catch ( final IOException e ) {
 			marshaller.setException(e);
 		} finally {
 			try {
-				writer.close();
+				abstractWriter.close();
 			} catch ( final IOException e ) {
 				marshaller.setException(e);
 			}

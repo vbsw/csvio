@@ -23,7 +23,7 @@ public abstract class CSVCharProcessor {
 	 * It is called before any other method.
 	 * @param parser Default Parser or some custom parser to help processing.
 	 */
-	public abstract void startProcessing ( final CSVParser parser );
+	public abstract void startProcessing ( CSVParser parser );
 
 	/**
 	 * It is called, when non empty line is detected.
@@ -33,18 +33,18 @@ public abstract class CSVCharProcessor {
 	 * @param lineNumber Number of the line to process.
 	 * @param bytesReadTotal Number of bytes read until now (including this line).
 	 */
-	public abstract void processLine ( final char[] chars, final int fromLeft, final int toRight, final int lineNumber, final int bytesReadTotal );
+	public abstract void processLine ( char[] chars, int fromLeft, int toRight, int lineNumber, int bytesReadTotal );
 
 	/**
-	 * It is called at very end (and after setException).
+	 * It is called at the very end (even after setException).
 	 * @param bytesReadTotal Number of bytes processed. Could be less then excepted if setException has been called. 
 	 */
-	public abstract void endProcessing ( final int bytesReadTotal );
+	public abstract void endProcessing ( int bytesReadTotal );
 
 	/**
 	 * It is called, when some exception occurs. Processing stops then.
 	 * @param e Exception.
 	 */
-	public abstract void setException ( final IOException e );
+	public abstract void setException ( IOException e );
 
 }

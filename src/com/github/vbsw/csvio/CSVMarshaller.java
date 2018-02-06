@@ -15,18 +15,41 @@ import java.nio.charset.Charset;
 
 
 /**
+ * Template for marshalling lines to a writer.
+ * 
  * @author Vitali Baumtrok
  */
 public abstract class CSVMarshaller {
 
-	public abstract void startMarshalling ( final CSVParser parser, final Charset charset );
+	/**
+	 * It is called before any other method.
+	 * @param parser Default Parser or some custom parser to help processing.
+	 * @param charset Charset used to convert strings to bytes.
+	 */
+	public abstract void startMarshalling ( CSVParser parser, Charset charset );
 
+	/**
+	 * Returns true, if marshaller has lines to write.
+	 * @return true, if marshaller has lines to write.
+	 */
 	public abstract boolean hasLine ( );
 
-	public abstract void marshallLine ( final Writer writer ) throws IOException;
+	/**
+	 * Puts a line to writer. Line feed (LF) will be added automatically and doesn't need to be added here.
+	 * @param abstractWriter Writer to write to.
+	 * @throws IOException If an I/O error occurs.
+	 */
+	public abstract void marshallLine ( Writer abstractWriter ) throws IOException;
 
+	/**
+	 * It is called at the very end (even after setException).
+	 */
 	public abstract void endMarshalling ( );
 
-	public abstract void setException ( final IOException e );
+	/**
+	 * It is called, when some exception occurs. Processing stops then.
+	 * @param e Exception.
+	 */
+	public abstract void setException ( IOException e );
 
 }

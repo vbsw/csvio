@@ -67,6 +67,14 @@ class CSVParserTest {
 	}
 
 	@Test
+	void testToString ( ) {
+		final CSVParser parser = new CSVParser();
+
+		assertEquals("5",parser.toString(5));
+		assertEquals("123445",parser.toString(123445));
+	}
+
+	@Test
 	void testSplitValues ( ) {
 		final CSVParser parser = new CSVParser();
 		final String str1 = "asdf   ,  qwer,yxcv,";
@@ -138,9 +146,9 @@ class CSVParserTest {
 		assertEquals(11,parser.seekPosition(str1.getBytes(),6,str1.length(),(byte) '\n'));
 		assertEquals(str1.length(),parser.seekPosition(str1.getBytes(),6,str1.length(),(byte) 'k'));
 	}
-	
+
 	@Test
-	void testGetValuesCount() {
+	void testGetValuesCount ( ) {
 		final CSVParser parser = new CSVParser();
 		final String str1 = "   asdf adf\n asdf";
 
