@@ -23,7 +23,7 @@ public abstract class CSVMarshaller {
 
 	public abstract boolean hasLine ( );
 
-	public abstract void marshallLine ( final Writer writer );
+	public abstract void marshallLine ( final Writer writer ) throws IOException;
 
 	public abstract void endMarshalling ( );
 
