@@ -30,9 +30,9 @@ public class CSVWriter {
 		final CSVParser parser = getParser();
 		final Charset charset = getCharset();
 
-		marshaller.startMarshalling(parser);
+		marshaller.startMarshalling(parser,charset);
 
-		try ( final BufferedWriter writer = Files.newBufferedWriter(filePath,charset,StandardOpenOption.WRITE) ) {
+		try ( final BufferedWriter writer = getBufferedWriter(filePath,charset) ) {
 			while ( marshaller.hasLine() ) {
 				marshaller.marshallLine(writer);
 				writer.newLine();
@@ -47,7 +47,7 @@ public class CSVWriter {
 	public void writeAbstract ( final Writer writer, final CSVMarshaller marshaller ) {
 		final CSVParser parser = getParser();
 
-		marshaller.startMarshalling(parser);
+		marshaller.startMarshalling(parser,null);
 
 		try {
 			while ( marshaller.hasLine() ) {
@@ -67,6 +67,11 @@ public class CSVWriter {
 
 	protected CSVParser getParser ( ) {
 		return new CSVParser();
+	}
+
+	protected BufferedWriter getBufferedWriter ( final Path filePath, final Charset charset ) throws IOException {
+		final BufferedWriter writer = Files.newBufferedWriter(filePath,charset,StandardOpenOption.WRITE);
+		return writer;
 	}
 
 }
