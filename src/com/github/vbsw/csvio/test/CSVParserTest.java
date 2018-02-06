@@ -11,6 +11,8 @@ package com.github.vbsw.csvio.test;
 
 import static org.junit.Assert.assertEquals;
 
+import java.nio.charset.StandardCharsets;
+
 import org.junit.jupiter.api.Test;
 
 import com.github.vbsw.csvio.CSVParser;
@@ -70,20 +72,20 @@ class CSVParserTest {
 		final String str1 = "asdf   ,  qwer,yxcv,";
 		final String str2 = "asdf   {|}  qwer{|}yxcv{|}";
 		final byte[] separator2 = new byte[] { '{', '|', '}' };
-		final byte[][] values1 = parser.splitValues(str1.getBytes(),0,str1.length());
-		final byte[][] values2 = parser.splitValues(str2.getBytes(),0,str2.length(),separator2);
+		final String[] values1 = parser.splitValues(str1.getBytes(),0,str1.length());
+		final String[] values2 = parser.splitValues(str2.getBytes(),0,str2.length(),separator2,StandardCharsets.UTF_8);
 
 		assertEquals(4,values1.length);
-		assertEquals(true,new String(values1[0]).equals("asdf"));
-		assertEquals(true,new String(values1[1]).equals("qwer"));
-		assertEquals(true,new String(values1[2]).equals("yxcv"));
-		assertEquals(true,new String(values1[3]).equals(""));
+		assertEquals(true,values1[0].equals("asdf"));
+		assertEquals(true,values1[1].equals("qwer"));
+		assertEquals(true,values1[2].equals("yxcv"));
+		assertEquals(true,values1[3].equals(""));
 
 		assertEquals(4,values2.length);
-		assertEquals(true,new String(values2[0]).equals("asdf"));
-		assertEquals(true,new String(values2[1]).equals("qwer"));
-		assertEquals(true,new String(values2[2]).equals("yxcv"));
-		assertEquals(true,new String(values2[3]).equals(""));
+		assertEquals(true,values2[0].equals("asdf"));
+		assertEquals(true,values2[1].equals("qwer"));
+		assertEquals(true,values2[2].equals("yxcv"));
+		assertEquals(true,values2[3].equals(""));
 	}
 
 	@Test

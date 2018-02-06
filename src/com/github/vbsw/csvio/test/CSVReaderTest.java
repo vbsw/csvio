@@ -132,14 +132,11 @@ class CSVReaderTest {
 		}
 
 		@Override
-		public void processCSV ( byte[] bytes, int fromLeft, int toRight, int lineNumber, int bytesReadTotal ) {
+		public void processLine ( byte[] bytes, int fromLeft, int toRight, int lineNumber, int bytesReadTotal ) {
 			if ( this.entryCounter < this.lineNumbers.length ) {
-				final byte[][] values = this.parser.splitValues(bytes,fromLeft,toRight);
+				final String[] values = this.parser.splitValues(bytes,fromLeft,toRight);
 				this.lineNumbers[this.entryCounter] = lineNumber;
-				this.values[this.entryCounter] = new String[values.length];
-				for ( int i = 0; i < values.length; i += 1 ) {
-					this.values[this.entryCounter][i] = new String(values[i]);
-				}
+				this.values[this.entryCounter] = values;
 			}
 			this.entryCounter += 1;
 			this.bytesReadTotal = bytesReadTotal;
@@ -173,7 +170,7 @@ class CSVReaderTest {
 			}
 			return stringBuilder.toString();
 		}
-		
+
 	}
 
 	private static class TestCharProcessor extends CSVCharProcessor {
@@ -193,14 +190,11 @@ class CSVReaderTest {
 		}
 
 		@Override
-		public void processCSV ( char[] chars, int fromLeft, int toRight, int lineNumber, int bytesReadTotal ) {
+		public void processLine ( char[] chars, int fromLeft, int toRight, int lineNumber, int bytesReadTotal ) {
 			if ( this.entryCounter < this.lineNumbers.length ) {
-				final char[][] values = this.parser.splitValues(chars,fromLeft,toRight);
+				final String[] values = this.parser.splitValues(chars,fromLeft,toRight);
 				this.lineNumbers[this.entryCounter] = lineNumber;
-				this.values[this.entryCounter] = new String[values.length];
-				for ( int i = 0; i < values.length; i += 1 ) {
-					this.values[this.entryCounter][i] = new String(values[i]);
-				}
+				this.values[this.entryCounter] = values;
 			}
 			this.entryCounter += 1;
 			this.bytesReadTotal = bytesReadTotal;
@@ -234,9 +228,9 @@ class CSVReaderTest {
 			}
 			return stringBuilder.toString();
 		}
-		
+
 	}
-	
+
 	private static class CharReader extends Reader {
 
 		private final String content;

@@ -13,6 +13,8 @@ import java.nio.ByteBuffer;
 
 
 /**
+ * The reader to read from a file or an abstract source. Internal objects are preserved between the reads.
+ * 
  * @author Vitali Baumtrok
  */
 public class CSVReaderPreserved extends CSVReader {

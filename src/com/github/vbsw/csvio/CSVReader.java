@@ -19,6 +19,8 @@ import java.nio.file.StandardOpenOption;
 
 
 /**
+ * The reader to read from a file or an abstract source.
+ * 
  * @author Vitali Baumtrok
  */
 public class CSVReader {
@@ -26,6 +28,11 @@ public class CSVReader {
 	protected static final int INITIAL_BYTE_BUFFER_CAPACITY = 1024 * 8 - 64 * 8;
 	protected static final int INITIAL_CHAR_BUFFER_CAPACITY = 1024 * 8 - 64 * 8;
 
+	/**
+	 * Reads the file from <code>filePath</code> and forwards its non empty lines to <code>processor</code>.
+	 * @param filePath Path to the file to read from.
+	 * @param processor Processor to process the non empty lines.
+	 */
 	public void readFile ( final Path filePath, final CSVByteProcessor processor ) {
 		final CSVParser parser = getParser();
 		int bytesReadTotal = 0;
@@ -60,7 +67,7 @@ public class CSVReader {
 				}
 				bytesReadTotal += (lineEnd - lineBegin);
 				if ( !parser.isWhitespace(buffer.array(),lineBegin,lineEnd) ) {
-					processor.processCSV(buffer.array(),lineBegin,lineEnd,lineNumber,bytesReadTotal);
+					processor.processLine(buffer.array(),lineBegin,lineEnd,lineNumber,bytesReadTotal);
 				}
 				lineBegin = lineEnd;
 			}
@@ -72,6 +79,11 @@ public class CSVReader {
 		}
 	}
 
+	/**
+	 * Reads from <code>reader</code> and forwards its non empty lines to <code>processor</code>.
+	 * @param reader Source to read from.
+	 * @param processor Processor to process the non empty lines.
+	 */
 	public void readAbstract ( final Reader reader, final CSVCharProcessor processor ) {
 		final CSVParser parser = getParser();
 		int bytesReadTotal = 0;
@@ -106,7 +118,7 @@ public class CSVReader {
 				}
 				bytesReadTotal += (lineEnd - lineBegin);
 				if ( !parser.isWhitespace(buffer,lineBegin,lineEnd) ) {
-					processor.processCSV(buffer,lineBegin,lineEnd,lineNumber,bytesReadTotal);
+					processor.processLine(buffer,lineBegin,lineEnd,lineNumber,bytesReadTotal);
 				}
 				lineBegin = lineEnd;
 			}
