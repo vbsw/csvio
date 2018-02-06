@@ -25,7 +25,7 @@ public class CSVParser {
 	 * @param bytes Bytes to parse.
 	 * @param fromLeft Start index (inclusive).
 	 * @param toRight End index (exclusive).
-	 * @return The index after line feed.
+	 * @return The index after line feed or the end index.
 	 */
 	public int seekAfterLF ( final byte[] bytes, final int fromLeft, final int toRight ) {
 		if ( fromLeft < toRight ) {
@@ -44,7 +44,7 @@ public class CSVParser {
 	 * @param chars Characters to parse.
 	 * @param fromLeft Start index (inclusive).
 	 * @param toRight End index (exclusive).
-	 * @return The index after line feed.
+	 * @return The index after line feed or the end index.
 	 */
 	public int seekAfterLF ( final char[] chars, final int fromLeft, final int toRight ) {
 		if ( fromLeft < toRight ) {
@@ -63,7 +63,7 @@ public class CSVParser {
 	 * @param bytes Bytes to parse.
 	 * @param fromLeft Start index (inclusive).
 	 * @param toRight End index (exclusive).
-	 * @return The index of the first non whitespace byte.
+	 * @return The index of the first non whitespace byte or the end index.
 	 */
 	public int seekContent ( final byte[] bytes, final int fromLeft, final int toRight ) {
 		if ( fromLeft < toRight ) {
@@ -82,7 +82,7 @@ public class CSVParser {
 	 * @param chars Characters to parse.
 	 * @param fromLeft Start index (inclusive).
 	 * @param toRight End index (exclusive).
-	 * @return The index of the first non whitespace byte.
+	 * @return The index of the first non whitespace byte or the end index.
 	 */
 	public int seekContent ( final char[] chars, final int fromLeft, final int toRight ) {
 		if ( fromLeft < toRight ) {
@@ -139,7 +139,7 @@ public class CSVParser {
 	 * @param bytes Bytes to parse.
 	 * @param fromRight Start index (exclusive).
 	 * @param toLeft End index (inclusive).
-	 * @return true, if the byte before the start index is a line feed (LF)
+	 * @return true, if the byte before the start index is a line feed.
 	 */
 	public boolean endsWithLF ( final byte[] bytes, final int fromRight, final int toLeft ) {
 		return fromRight > toLeft && bytes[fromRight - 1] == '\n';
@@ -150,7 +150,7 @@ public class CSVParser {
 	 * @param chars Characters to parse.
 	 * @param fromRight Start index (exclusive).
 	 * @param toLeft End index (inclusive).
-	 * @return true, if the byte before the start index is a line feed (LF)
+	 * @return true, if the byte before the start index is a line feed.
 	 */
 	public boolean endsWithLF ( final char[] chars, final int fromRight, final int toLeft ) {
 		return fromRight > toLeft && chars[fromRight - 1] == '\n';
