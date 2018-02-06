@@ -13,8 +13,8 @@ Code:
 	import java.nio.file.Files;
 	import java.nio.file.Path;
 	import java.nio.file.Paths;
-	
-	public class Main extends CSVProcessor {
+
+	public class Main extends CSVByteProcessor {
 
 		private CSVParser parser;
 
@@ -37,11 +37,11 @@ Code:
 		}
 
 		@Override
-		public void processCSV ( byte[] bytes, int from, int to, int lineNumber, int bytesReadTotal ) {
-			final byte[][] values = this.parser.splitValues(bytes,from,to);
+		public void processLine ( byte[] bytes, int from, int to, int lineNumber, int bytesReadTotal ) {
+			final String[] values = this.parser.splitValues(bytes,from,to);
 			System.out.print("values:");
 			for ( int i = 0; i < values.length; i += 1 ) {
-				System.out.print(" " + new String(values[i]));
+				System.out.print(" " + values[i]);
 			}
 			System.out.println();
 		}
