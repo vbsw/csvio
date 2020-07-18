@@ -1,7 +1,7 @@
 # CSV IO
 
 ## About
-CSV IO is a library to read and write CSV files. CSV IO is published on <https://github.com/vbsw/csvio>.
+CSV IO is a library to read and write CSV files. CSV IO is published on <https://github.com/vbsw/csvio> and <https://gitlab.com/vbsw/csvio>.
 
 ## Example
 Code:
@@ -19,7 +19,7 @@ Code:
 			final CSVFile file = new CSVFile(path);
 			Files.write(path,content.getBytes());
 
-			CSVFileReader reader = file.getReader();
+			final CSVFileReader reader = file.getReader();
 			for (String[] fields: reader) {
 				System.out.println(Arrays.toString(fields));
 			}
@@ -35,7 +35,7 @@ Output:
 
 	[asdf, qwer, yxcv]
 	[a, b, c, d]
-	bytes read: 14
+	bytes read: 24
 
 ## Compiling
 Install [Java](http://www.oracle.com/technetwork/java/javase/downloads/index.html), [Git](https://git-scm.com) and [Eclipse](https://www.eclipse.org).

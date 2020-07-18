@@ -29,11 +29,15 @@ public class CSVFileReader implements AutoCloseable, Iterable<String[]> {
 	protected int[] headerMapping;
 
 	public CSVFileReader (final Path path, final byte[] delimiter, final Charset charset, final String[] header) throws IOException {
-		this(path,delimiter,charset,header,new IOStats());
+		this(Files.newInputStream(path),delimiter,charset,header,new IOStats());
 	}
 
 	public CSVFileReader (final Path path, final byte[] delimiter, final Charset charset, final String[] header, final IOStats stats) throws IOException {
-		this.inputStream = Files.newInputStream(path);
+		this(Files.newInputStream(path),delimiter,charset,header,stats);
+	}
+
+	public CSVFileReader (final InputStream inputStream, final byte[] delimiter, final Charset charset, final String[] header, final IOStats stats) throws IOException {
+		this.inputStream = inputStream;
 		this.delimiter = delimiter;
 		this.charset = charset;
 		this.header = header;

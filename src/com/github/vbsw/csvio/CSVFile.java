@@ -133,4 +133,14 @@ public class CSVFile {
 		return reader;
 	}
 
+	public CSVFileWriter getWriter() throws IOException {
+		return getWriter(path);
+	}
+
+	public CSVFileWriter getWriter(final Path path) throws IOException {
+		final char[] delimiter = this.delimiter.toCharArray();
+		final CSVFileWriter writer = new CSVFileWriter(path,delimiter,charset);
+		return writer;
+	}
+
 }
