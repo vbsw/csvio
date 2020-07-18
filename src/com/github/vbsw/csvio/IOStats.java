@@ -8,29 +8,34 @@
 package com.github.vbsw.csvio;
 
 
-import java.io.IOException;
-
 /**
  * @author Vitali Baumtrok
  */
-public class IODetails {
+public class IOStats {
 
-	public IOException ioException;
-	public boolean readSuccessful;
+	public boolean ioSuccessful;
 	public boolean headerAvailable;
 	public int totalLinesCount;
 	public int contentLinesCount;
 	public int errorLinesCount;
 	public int emptyLinesCount;
-	public int bytesRead;
+	public int bytesCount;
 
+	public void reset() {
+		ioSuccessful = false;
+		headerAvailable = false;
+		totalLinesCount = 0;
+		contentLinesCount = 0;
+		errorLinesCount = 0;
+		emptyLinesCount = 0;
+		bytesCount = 0;
+	}
+
+	@Override
 	public String toString() {
 		final StringBuilder stringBuilder = new StringBuilder(256);
-		stringBuilder.append("io exception         ");
-		stringBuilder.append(toString(ioException != null));
-		stringBuilder.append('\n');
-		stringBuilder.append("read successful      ");
-		stringBuilder.append(toString(readSuccessful));
+		stringBuilder.append("io successful        ");
+		stringBuilder.append(toString(ioSuccessful));
 		stringBuilder.append('\n');
 		stringBuilder.append("header available     ");
 		stringBuilder.append(toString(headerAvailable));
@@ -47,8 +52,8 @@ public class IODetails {
 		stringBuilder.append("empty lines count    ");
 		stringBuilder.append(emptyLinesCount);
 		stringBuilder.append('\n');
-		stringBuilder.append("bytes read           ");
-		stringBuilder.append(bytesRead);
+		stringBuilder.append("bytes count          ");
+		stringBuilder.append(bytesCount);
 		return stringBuilder.toString();
 	}
 

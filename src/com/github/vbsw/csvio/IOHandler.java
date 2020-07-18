@@ -11,15 +11,15 @@ package com.github.vbsw.csvio;
 /**
  * @author Vitali Baumtrok
  */
-public interface IOClient {
+public interface IOHandler {
 
-	public void prepairRead();
+	public void prepairInput();
 
-	public void processRead(String[] values, int[] headerMapping, IODetails details);
+	public void processInput(String[] values, int[] headerMapping, IOStats stats);
 
-	public void prepairWrite();
+	public void prepairOutput();
 
-	public void processWrite();
+	public void processOutput();
 
 	public String[] getFieldNames();
 

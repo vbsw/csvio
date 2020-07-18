@@ -91,6 +91,23 @@ public class CSVParser {
 		return values;
 	}
 
+	public static int[] createHeaderMapping(final String[] fieldNames, final String[] availableFieldNames) {
+		final int[] mapping = new int[fieldNames.length];
+		for (int i = 0; i < fieldNames.length; i++) {
+			mapping[i] = -1;
+			for (int j = 0; j < availableFieldNames.length; j++) {
+				if (fieldNames[i].equals(availableFieldNames[j])) {
+					mapping[i] = j;
+					break;
+				}
+			}
+		}
+		for (int i: mapping)
+			if (i >= 0)
+				return mapping;
+		return null;
+	}
+
 	private static String createString(final byte[] bytes, final int from, final int to, Charset charset) {
 		final int beginIndex = seekContent(bytes,from,to);
 		final int endIndex = seekWhitespaceRight(bytes,beginIndex,to);

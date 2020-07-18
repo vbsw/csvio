@@ -1,66 +1,40 @@
 # CSV IO
 
 ## About
-CSV IO is a library to read and write CSV files. CSV IO is published at <https://github.com/vbsw/csvio>.
-
-## Copyright
-See file COPYRIGHT.
+CSV IO is a library to read and write CSV files. CSV IO is published on <https://github.com/vbsw/csvio>.
 
 ## Example
 Code:
 
-	import java.io.IOException;
 	import java.nio.file.Files;
 	import java.nio.file.Path;
 	import java.nio.file.Paths;
 	import java.util.Arrays;
 
-	public class Main extends CSVByteProcessor {
+	public class Main {
 
-		private CSVParser parser;
+		public static void main ( String[] args ) throws Exception {
+			final Path path = Paths.get(System.getProperty("user.home"),"csvio.test.csv");
+			final String content = "asdf,qwer,yxcv \n a,b,c,d";
+			final CSVFile file = new CSVFile(path);
+			Files.write(path,content.getBytes());
 
-		public static void main ( String[] args ) {
-			final Path filePath = Paths.get(System.getProperty("user.home"),"csvio.test.csv");
-			final String content = "asdf,qwer,yxcv";
-
-			final Main processor = new Main();
-			final CSVReader reader = new CSVReader();
-
-			try {
-				Files.write(filePath,content.getBytes());
-				reader.readFile(filePath,processor);
-				Files.delete(filePath);
-
-			} catch ( IOException e ) {
+			CSVFileReader reader = file.getReader();
+			for (String[] fields: reader) {
+				System.out.println(Arrays.toString(fields));
 			}
-		}
+			reader.close();
+			System.out.println("bytes read: " + reader.getStats().bytesCount);
 
-		@Override
-		public void startProcessing ( CSVParser csvParser ) {
-			this.parser = csvParser;
-		}
-
-		@Override
-		public void processLine ( byte[] bytes, int from, int to, int lineNumber, int bytesReadTotal ) {
-			final String[] values = this.parser.splitValues(bytes,from,to);
-			System.out.println("values: " + Arrays.toString(values));
-		}
-
-		@Override
-		public void endProcessing ( int bytesReadTotal ) {
-			System.out.println("bytes read: " + bytesReadTotal);
-		}
-
-		@Override
-		public void setException ( IOException e ) {
-			e.printStackTrace();
+			Files.delete(path);
 		}
 
 	}
 
 Output:
 
-	values: [asdf, qwer, yxcv]
+	[asdf, qwer, yxcv]
+	[a, b, c, d]
 	bytes read: 14
 
 ## Compiling
